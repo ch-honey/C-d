@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Channel Directory</title>
+<meta name="description" content="Add your WhatsApp channel and discover other channels.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Channel Directory">
+<meta property="og:description" content="Add your WhatsApp channel and discover other channels.">
+<meta property="og:url" content="https://play-full-video.netlify.app/">
+<meta property="og:image" content="https://play-full-video.netlify.app/og-image.jpg?v=2">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="736">
+<meta property="og:image:height" content="736">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://play-full-video.netlify.app/og-image.jpg?v=2">
+<style>
+:root{--bg:#eef3ef;--card:#fff;--ink:#12261c;--mute:#5b6e63;--line:#d5e0d8;--wa:#128c4a;--waink:#fff;--bad:#c0392b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a14;--card:#17271e;--ink:#e8f3ec;--mute:#93aa9c;--line:#27402f;--wa:#2fbf71;--waink:#06210f;--bad:#ff8a7a}}
+:root[data-theme="dark"]{--bg:#0e1a14;--card:#17271e;--ink:#e8f3ec;--mute:#93aa9c;--line:#27402f;--wa:#2fbf71;--waink:#06210f;--bad:#ff8a7a}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",Verdana,sans-serif;padding:20px}
+.wrap{max-width:460px;margin:auto}
+h1{font-size:22px;margin:0 0 4px}
+h2{font-size:15px;color:var(--mute);margin:26px 0 10px;font-weight:600}
+.sub{color:var(--mute);font-size:14px;margin:0 0 14px}
+label{display:block;font-size:13px;color:var(--mute);margin:12px 0 4px}
+input[type=text],input[type=url],input[type=number]{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-size:16px}
+input:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--wa);outline-offset:2px}
+.pic{display:flex;align-items:center;gap:12px;margin-top:6px}
+.pic button{padding:9px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:14px;cursor:pointer}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;gap:14px;align-items:center;margin-bottom:10px}
+.av{width:56px;height:56px;border-radius:50%;background:var(--wa);color:var(--waink);display:grid;place-items:center;font-size:24px;font-weight:700;flex:none;overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+.body{flex:1;min-width:0}
+.body b{display:block;font-size:17px;word-break:break-word}
+.body span{font-size:13px;color:var(--mute)}
+.join{display:inline-block;margin-top:8px;background:var(--wa);color:var(--waink);padding:7px 14px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px}
+.del{border:0;background:none;color:var(--bad);font:inherit;font-size:13px;cursor:pointer;margin-left:12px}
+.row{display:flex;gap:10px;margin-top:14px}
+.btn{flex:1;padding:13px;border-radius:10px;border:1px solid var(--wa);font:inherit;font-weight:700;font-size:15px;cursor:pointer;text-align:center;text-decoration:none}
+.p{background:var(--wa);color:var(--waink)}
+.s{background:transparent;color:var(--wa)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.hint{font-size:13px;color:var(--mute);margin-top:8px;min-height:18px}
+.err{color:var(--bad)}
+.empty{color:var(--mute);font-size:14px;padding:14px;border:1px dashed var(--line);border-radius:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Channel Directory</h1>
+  <p class="sub">Add your WhatsApp channel here and it will show live in the list for everyone.</p>
+
+  <label for="n">Channel name</label>
+  <input type="text" id="n" placeholder="Mera Channel" maxlength="60" autocomplete="off">
+  <label for="f">Followers</label>
+  <input type="number" id="f" placeholder="1200" min="0" inputmode="numeric">
+  <label for="l">Channel link</label>
+  <input type="url" id="l" placeholder="https://whatsapp.com/channel/..." inputmode="url" autocomplete="off">
+  <label>Channel photo</label>
+  <div class="pic">
+    <div class="av" id="picPrev">?</div>
+    <button type="button" id="picBtn">Choose photo</button>
+    <input type="file" id="picIn" accept="image/*" hidden>
+  </div>
+
+  <h2>Live preview</h2>
+  <div class="card" id="prev"></div>
+
+  <div class="row">
+    <button class="btn p" id="pub" type="button">Publish to website</button>
+  </div>
+  <div class="hint" id="hint"></div>
+
+  <h2 id="dirTitle">Live channels</h2>
+  <div id="dir"><div class="empty">Loading…</div></div>
+
+  <div class="row">
+    <a class="btn s" id="share" href="#" target="_blank" rel="noopener">Share this website on WhatsApp</a>
+  </div>
+</div>
+<script>
+var $=function(i){return document.getElementById(i)};
+var pic="",myId=null,isOwner=false,db=null;
+function fmt(v){var n=parseInt(String(v).replace(/[^0-9]/g,""),10)||0;
+  if(n>=1e6)return (n/1e6).toFixed(1).replace(/\.0$/,"")+"M";
+  if(n>=1e3)return (n/1e3).toFixed(1).replace(/\.0$/,"")+"K";return String(n)}
+function safeLink(u){u=(u||"").trim();return /^https?:\/\//i.test(u)?u:""}
+function avatar(el,name,img){el.textContent="";
+  if(img&&/^data:image\/(jpeg|png|webp);base64,/.test(img)){var i=document.createElement("img");i.src=img;i.alt="";el.appendChild(i)}
+  else el.textContent=(name||"?").charAt(0).toUpperCase()}
+function cardEl(c,canDel,onDel){
+  var d=document.createElement("div");d.className="card";
+  var av=document.createElement("div");av.className="av";avatar(av,c.name,c.pic);
+  var b=document.createElement("div");b.className="body";
+  var nm=document.createElement("b");nm.textContent=c.name||"Channel";
+  var fl=document.createElement("span");fl.textContent=fmt(c.followers)+" followers";
+  b.appendChild(nm);b.appendChild(fl);b.appendChild(document.createElement("br"));
+  var lk=safeLink(c.link);
+  if(lk){var a=document.createElement("a");a.className="join";a.href=lk;a.target="_blank";a.rel="noopener";a.textContent="Join channel";b.appendChild(a)}
+  if(canDel){var x=document.createElement("button");x.className="del";x.type="button";x.textContent="Remove";x.onclick=onDel;b.appendChild(x)}
+  d.appendChild(av);d.appendChild(b);return d}
+function preview(){var p=$("prev");p.innerHTML="";
+  var c={name:$("n").value.trim()||"Mera Channel",followers:$("f").value||0,link:$("l").value,pic:pic};
+  p.replaceWith(Object.assign(cardEl(c,false),{id:"prev"}));
+  avatar($("picPrev"),c.name,pic)}
+["n","f","l"].forEach(function(i){$(i).addEventListener("input",preview)});
+$("picBtn").onclick=function(){$("picIn").click()};
+$("picIn").onchange=function(e){var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){
+    var s=Math.min(im.width,im.height),cv=document.createElement("canvas");cv.width=cv.height=160;
+    cv.getContext("2d").drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,160,160);
+    pic=cv.toDataURL("image/jpeg",.8);preview()};
+    im.onerror=function(){say("Couldn’t open this photo. Please try another one.",1)};im.src=r.result};r.readAsDataURL(f)};
+function say(t,bad){var h=$("hint");h.textContent=t;h.className="hint"+(bad?" err":"")}
+function renderDir(docs){var d=$("dir");d.innerHTML="";
+  if(!docs.length){d.innerHTML='<div class="empty">No channels yet. Be the first to add one.</div>';return}
+  docs.sort(function(a,b){return (b.data.followers||0)-(a.data.followers||0)});
+  docs.forEach(function(x){var mine=x.id===myId;
+    d.appendChild(cardEl(x.data,mine||isOwner,function(){
+      if(!confirm("Remove this channel from the list?"))return;
+      db.collection("channels").doc(x.id).delete().catch(function(){say("Couldn’t remove it.",1)})}))});
+  $("dirTitle").textContent="Live channels ("+docs.length+")"}
+$("pub").onclick=function(){
+  var name=$("n").value.trim(),link=safeLink($("l").value),fol=parseInt($("f").value,10)||0;
+  if(!name){say("Enter a channel name.",1);return}
+  if(!link){say("Enter a valid channel link (starting with https://).",1);return}
+  if(!db||!myId){say("You need to be signed in to this page to publish.",1);return}
+  $("pub").disabled=true;
+  db.collection("channels").doc(myId).set({name:name,followers:fol,link:link,pic:pic,at:Date.now()})
+   .then(function(){say("Your channel is now live.")})
+   .catch(function(){say("Couldn’t save. You may not have permission to add channels on this page.",1)})
+   .then(function(){$("pub").disabled=false})};
+$("share").href="https://wa.me/?text="+encodeURIComponent("Add your WhatsApp channel to this list and discover other channels:\n"+location.href);
+preview();
+(async function(){
+  var user=null;
+  try{user=await claude.use("user")}catch(e){}
+  try{db=await claude.use("db")}catch(e){}
+  if(user){try{myId=await user.id();isOwner=await user.isOwner()}catch(e){}}
+  if(!db){$("dir").innerHTML='<div class="empty">Sign in to see the directory. The form and preview still work.</div>';return}
+  db.collection("channels").onSnapshot(function(s){renderDir(s.docs.map(function(d){return{id:d.id,data:d.data()||{}}}))},
+    function(){$("dir").innerHTML='<div class="empty">The directory couldn’t be loaded right now.</div>'});
+})();
+</script>
+</body>
+</html>
